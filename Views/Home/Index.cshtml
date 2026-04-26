@@ -1,0 +1,116 @@
+@{
+    ViewData["Title"] = "Home Page";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!-- HERO -->
+<section style="background: linear-gradient(135deg, #f5ede6 0%, #f7eeec 100%); padding: 100px 40px; text-align: center; position: relative; overflow: hidden;">
+    <div style="position:absolute; top:-100px; right:-100px; width:400px; height:400px; background:radial-gradient(circle, rgba(196,113,74,0.08) 0%, transparent 70%); border-radius:50%;"></div>
+    <div style="position:absolute; bottom:-80px; left:-80px; width:300px; height:300px; background:radial-gradient(circle, rgba(212,148,138,0.08) 0%, transparent 70%); border-radius:50%;"></div>
+    
+    <div style="position:relative; max-width:700px; margin:0 auto;">
+        <div style="font-size:11px; font-weight:600; letter-spacing:4px; text-transform:uppercase; color:#c4714a; margin-bottom:16px;">
+            ✦ Handcrafted with Love ✦
+        </div>
+        <h1 style="font-family:'Cormorant Garamond',serif; font-size:68px; font-weight:600; color:#2c1a0e; line-height:1.1; margin-bottom:20px;">
+            Wear the Art of <em style="color:#c4714a; font-style:italic;">Crochet</em>
+        </h1>
+        <p style="font-size:16px; color:#9c7b6a; max-width:480px; margin:0 auto 36px; line-height:1.8; font-weight:300;">
+            Every piece is carefully handcrafted by Yasmah — unique crochet bags and clothing made for women who appreciate artisan fashion.
+        </p>
+        <div style="display:flex; gap:16px; justify-content:center; flex-wrap:wrap;">
+            <a href="/Shop" class="btn-terra">
+                <i class="bi bi-bag-fill"></i> Shop Collection
+            </a>
+            <a href="https://wa.me/2347036832309" class="whatsapp-btn">
+                <i class="bi bi-whatsapp"></i> Order via WhatsApp
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- CATEGORIES -->
+<section style="padding: 80px 40px; max-width:1200px; margin:0 auto;">
+    <div style="text-align:center; margin-bottom:48px;">
+        <div class="section-eyebrow">Browse by Category</div>
+        <h2 class="section-title">Shop Our Collections</h2>
+        <div class="section-divider" style="margin:16px auto 0;"></div>
+    </div>
+
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:24px;">
+        <a href="/Shop" class="category-card" style="text-decoration:none;">
+            <div style="width:100%; height:100%; background:linear-gradient(135deg, #f5ede6, #e8d0c0); display:flex; align-items:center; justify-content:center; min-height:300px;">
+                <i class="bi bi-handbag-fill" style="font-size:80px; color:#c4714a; opacity:0.4;"></i>
+            </div>
+            <div class="category-overlay">
+                <div>
+                    <div class="category-name">Bags</div>
+                    <div style="font-size:12px; color:rgba(255,255,255,0.7); margin-top:4px; font-family:'Jost',sans-serif;">Tote bags, clutches & more</div>
+                </div>
+            </div>
+        </a>
+
+        <a href="/Shop" class="category-card" style="text-decoration:none;">
+            <div style="width:100%; height:100%; background:linear-gradient(135deg, #f7eeec, #e8d4d0); display:flex; align-items:center; justify-content:center; min-height:300px;">
+                <i class="bi bi-person-fill" style="font-size:80px; color:#d4948a; opacity:0.4;"></i>
+            </div>
+            <div class="category-overlay">
+                <div>
+                    <div class="category-name">Clothing</div>
+                    <div style="font-size:12px; color:rgba(255,255,255,0.7); margin-top:4px; font-family:'Jost',sans-serif;">Tops, dresses & sets</div>
+                </div>
+            </div>
+        </a>
+    </div>
+</section>
+
+<!-- WHY YASMAH -->
+<section style="background:#2c1a0e; padding:80px 40px;">
+    <div style="max-width:1200px; margin:0 auto;">
+        <div style="text-align:center; margin-bottom:48px;">
+            <div style="font-size:10px; font-weight:600; letter-spacing:4px; text-transform:uppercase; color:#c4714a; margin-bottom:8px;">Why Choose Us</div>
+            <h2 style="font-family:'Cormorant Garamond',serif; font-size:40px; font-weight:600; color:white; line-height:1.2;">Made Different. Made Better.</h2>
+        </div>
+
+        <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:32px;">
+            <div style="text-align:center; padding:32px 24px;">
+                <div style="width:64px; height:64px; background:rgba(196,113,74,0.15); border-radius:50%; display:flex; align-items:center; justify-content:center; margin:0 auto 20px; font-size:28px; color:#c4714a;">
+                    <i class="bi bi-heart-fill"></i>
+                </div>
+                <h3 style="font-family:'Cormorant Garamond',serif; font-size:22px; color:white; margin-bottom:12px;">Made with Love</h3>
+                <p style="font-size:14px; color:rgba(255,255,255,0.5); line-height:1.7; font-weight:300;">Every stitch is placed with care and intention. No two pieces are exactly alike.</p>
+            </div>
+
+            <div style="text-align:center; padding:32px 24px;">
+                <div style="width:64px; height:64px; background:rgba(196,113,74,0.15); border-radius:50%; display:flex; align-items:center; justify-content:center; margin:0 auto 20px; font-size:28px; color:#c4714a;">
+                    <i class="bi bi-star-fill"></i>
+                </div>
+                <h3 style="font-family:'Cormorant Garamond',serif; font-size:22px; color:white; margin-bottom:12px;">Premium Quality</h3>
+                <p style="font-size:14px; color:rgba(255,255,255,0.5); line-height:1.7; font-weight:300;">Only the finest yarns and materials are used to create pieces that last.</p>
+            </div>
+
+            <div style="text-align:center; padding:32px 24px;">
+                <div style="width:64px; height:64px; background:rgba(196,113,74,0.15); border-radius:50%; display:flex; align-items:center; justify-content:center; margin:0 auto 20px; font-size:28px; color:#c4714a;">
+                    <i class="bi bi-truck"></i>
+                </div>
+                <h3 style="font-family:'Cormorant Garamond',serif; font-size:22px; color:white; margin-bottom:12px;">Fast Delivery</h3>
+                <p style="font-size:14px; color:rgba(255,255,255,0.5); line-height:1.7; font-weight:300;">We deliver across Nigeria. Order today and receive your piece in days.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA -->
+<section style="padding:80px 40px; text-align:center; background:#faf6f1;">
+    <div style="max-width:600px; margin:0 auto;">
+        <div class="section-eyebrow">Get in Touch</div>
+        <h2 class="section-title">Have a Custom Order?</h2>
+        <div class="section-divider" style="margin:16px auto 20px;"></div>
+        <p style="font-size:15px; color:#9c7b6a; line-height:1.8; margin-bottom:32px; font-weight:300;">
+            Want something made just for you? Reach out on WhatsApp and let's create your perfect piece together.
+        </p>
+        <a href="https://wa.me/2347036832309?text=Hi%20Yasmah%2C%20I%20would%20like%20to%20place%20a%20custom%20order" class="whatsapp-btn" style="font-size:15px; padding:14px 32px;">
+            <i class="bi bi-whatsapp"></i> Chat with Yasmah
+        </a>
+    </div>
+</section>
