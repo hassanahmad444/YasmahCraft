@@ -12,8 +12,8 @@ using YasmahCraft.Data;
 namespace YasmahCraft.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20260518225146_SwitchToPostgres")]
-    partial class SwitchToPostgres
+    [Migration("20260518230343_InitialPostgres")]
+    partial class InitialPostgres
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

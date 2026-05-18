@@ -5,7 +5,7 @@
 namespace YasmahCraft.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class SwitchToPostgres : Migration
+    public partial class InitialPostgres : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
