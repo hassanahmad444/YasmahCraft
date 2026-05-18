@@ -13,7 +13,6 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-// Use full Identity with role support instead of DefaultIdentity
 builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
 {
     options.SignIn.RequireConfirmedAccount = false;
@@ -27,6 +26,7 @@ builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<IOrderService, OrderService>();
 
 builder.Services.AddSession();
+
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
@@ -51,6 +51,13 @@ app.MapControllerRoute(
     .WithStaticAssets();
 app.MapRazorPages()
    .WithStaticAssets();
+
+// Run migrations first
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+    db.Database.Migrate();
+}
 
 // Seed admin role and account
 using (var scope = app.Services.CreateScope())
@@ -78,12 +85,6 @@ using (var scope = app.Services.CreateScope())
         if (result.Succeeded)
             await userManager.AddToRoleAsync(adminUser, "Admin");
     }
-}
-
-using (var scope = app.Services.CreateScope())
-{
-    var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-    db.Database.Migrate();
 }
 
 app.Run();
