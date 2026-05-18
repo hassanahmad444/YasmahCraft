@@ -3,45 +3,155 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<!-- HERO -->
-<section style="background: linear-gradient(135deg, #f5ede6 0%, #f7eeec 100%); padding: 100px 40px; text-align: center; position: relative; overflow: hidden;">
-    <div style="position:absolute; top:-100px; right:-100px; width:400px; height:400px; background:radial-gradient(circle, rgba(196,113,74,0.08) 0%, transparent 70%); border-radius:50%;"></div>
-    <div style="position:absolute; bottom:-80px; left:-80px; width:300px; height:300px; background:radial-gradient(circle, rgba(212,148,138,0.08) 0%, transparent 70%); border-radius:50%;"></div>
-    
-    <div style="position:relative; max-width:700px; margin:0 auto;">
-        <div style="font-size:11px; font-weight:600; letter-spacing:4px; text-transform:uppercase; color:#c4714a; margin-bottom:16px;">
-            ✦ Handcrafted with Love ✦
+<!-- HERO SLIDESHOW -->
+<section style="position:relative; width:100%; height:85vh; overflow:hidden; background:#0F0F0F;">
+
+    <style>
+        .slide{position:absolute;inset:0;opacity:0;transition:opacity 1.2s ease}
+        .slide.active{opacity:1}
+        .slide-img{position:absolute;inset:0;overflow:hidden}
+        .slide-img img{width:100%;height:100%;object-fit:cover;transition:transform 7s ease}
+        .slide.active .slide-img img{transform:scale(1.04)}
+        .slide-overlay{position:absolute;inset:0;background:linear-gradient(90deg,rgba(15,15,15,0.85) 0%,rgba(15,15,15,0.45) 60%,rgba(15,15,15,0.1) 100%)}
+        .slide-content{position:absolute;inset:0;display:flex;align-items:center;padding:0 7%;z-index:2}
+        .slide-text{max-width:480px}
+        .slide-eyebrow{font-size:11px;letter-spacing:4px;text-transform:uppercase;color:#D4AF37;margin-bottom:18px;font-family:'Jost',sans-serif}
+        .slide-title{font-size:52px;font-weight:400;color:#ffffff;line-height:1.1;margin-bottom:16px;font-family:'Cormorant Garamond',serif}
+        .slide-title em{color:#D4AF37;font-style:italic}
+        .slide-sub{font-size:15px;color:rgba(255,255,255,0.7);line-height:1.7;margin-bottom:32px;font-family:'Jost',sans-serif;font-weight:300;max-width:360px}
+        .slide-badge{display:inline-block;background:#D4AF37;color:#0F0F0F;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:6px 14px;margin-bottom:20px;font-family:'Jost',sans-serif}
+        .hero-btn-primary{display:inline-flex;align-items:center;gap:8px;background:#D4AF37;color:#0F0F0F;border:none;padding:14px 28px;font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:all 0.25s;font-family:'Jost',sans-serif;text-decoration:none}
+        .hero-btn-primary:hover{background:#ffffff;color:#0F0F0F;transform:translateY(-2px)}
+        .hero-btn-secondary{display:inline-flex;align-items:center;gap:8px;background:transparent;color:#ffffff;border:1px solid rgba(255,255,255,0.5);padding:14px 28px;font-size:12px;font-weight:600;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:all 0.25s;font-family:'Jost',sans-serif;text-decoration:none}
+        .hero-btn-secondary:hover{border-color:#D4AF37;color:#D4AF37}
+        .hero-btns{display:flex;gap:12px;flex-wrap:wrap}
+        .hero-nav{position:absolute;bottom:28px;left:7%;display:flex;align-items:center;gap:16px;z-index:10}
+        .hero-dot{width:24px;height:2px;background:rgba(255,255,255,0.35);cursor:pointer;transition:all 0.3s}
+        .hero-dot.active{width:40px;background:#D4AF37}
+        .hero-arrows{position:absolute;right:7%;bottom:22px;display:flex;gap:8px;z-index:10}
+        .hero-arrow{width:44px;height:44px;border:1px solid rgba(255,255,255,0.3);background:transparent;color:white;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:18px;transition:all 0.2s}
+        .hero-arrow:hover{border-color:#D4AF37;color:#D4AF37}
+        .hero-count{position:absolute;top:32px;right:7%;font-size:12px;color:rgba(255,255,255,0.4);letter-spacing:2px;font-family:'Jost',sans-serif;z-index:10}
+        .hero-progress{position:absolute;bottom:0;left:0;height:2px;background:#D4AF37;width:0%;z-index:10}
+
+        @@media(max-width:768px){
+            .slide-title{font-size:34px}
+            .slide-sub{font-size:13px;max-width:100%}
+            .slide-eyebrow{font-size:9px;margin-bottom:10px}
+            .slide-badge{font-size:9px;padding:5px 10px;margin-bottom:12px}
+            .slide-content{padding:0 24px;align-items:flex-end;padding-bottom:80px}
+            .hero-btn-primary,.hero-btn-secondary{padding:11px 18px;font-size:10px;letter-spacing:1px}
+            .hero-arrows{display:none}
+            .hero-count{top:20px;right:20px}
+            .hero-nav{bottom:20px;left:24px}
+            .slide-overlay{background:linear-gradient(0deg,rgba(15,15,15,0.88) 0%,rgba(15,15,15,0.3) 60%,transparent 100%)}
+        }
+    </style>
+
+    <!-- SLIDE 1 -->
+    <div class="slide active">
+        <div class="slide-img">
+            <img src="https://i.ibb.co/8D6JshxW/94b2435c6434fa78f57527e3955779bd.jpg" alt="Slide 1" style="object-position:center top;" />
         </div>
-        <h1 style="font-family:'Cormorant Garamond',serif; font-size:68px; font-weight:600; color:#2c1a0e; line-height:1.1; margin-bottom:20px;">
-            Wear the Art of <em style="color:#c4714a; font-style:italic;">Crochet</em>
-        </h1>
-        <p style="font-size:16px; color:#9c7b6a; max-width:480px; margin:0 auto 36px; line-height:1.8; font-weight:300;">
-            Every piece is carefully handcrafted by Yasmah — unique crochet bags and clothing made for women who appreciate artisan fashion.
-        </p>
-        <div style="display:flex; gap:16px; justify-content:center; flex-wrap:wrap;">
-            <a href="/Shop" class="btn-terra">
-                <i class="bi bi-bag-fill"></i> Shop Collection
-            </a>
-            <a href="https://wa.me/2347036832309" class="whatsapp-btn">
-                <i class="bi bi-whatsapp"></i> Order via WhatsApp
-            </a>
+        <div class="slide-overlay"></div>
+        <div class="slide-content">
+            <div class="slide-text">
+                <div class="slide-badge">New Collection 2026</div>
+                <div class="slide-eyebrow">Handcrafted with love</div>
+                <h1 class="slide-title">Wear the Art<br>of <em>Crochet</em></h1>
+                <p class="slide-sub">Unique pieces crafted stitch by stitch — for women who appreciate true artisan fashion.</p>
+                <div class="hero-btns">
+                    <a href="/Shop" class="hero-btn-primary">Shop Collection</a>
+                    <a href="https://wa.me/2347036832309" class="hero-btn-secondary">Order via WhatsApp</a>
+                </div>
+            </div>
         </div>
+    </div>
+
+    <!-- SLIDE 2 -->
+    <div class="slide">
+        <div class="slide-img">
+            <img src="https://i.ibb.co/vvVk0H2H/fad2fe6b91ab86d3d0d4948d12f17638.jpg" alt="Slide 2" />
+        </div>
+        <div class="slide-overlay"></div>
+        <div class="slide-content">
+            <div class="slide-text">
+                <div class="slide-badge">Co-ord Sets</div>
+                <div class="slide-eyebrow">Clothing collection</div>
+                <h1 class="slide-title">Bold, Beautiful<br><em>& Handmade</em></h1>
+                <p class="slide-sub">Statement co-ord sets crafted for every occasion — from birthdays to photoshoots.</p>
+                <div class="hero-btns">
+                    <a href="/Shop?category=Clothing" class="hero-btn-primary">Shop Clothing</a>
+                    <a href="https://wa.me/2347036832309" class="hero-btn-secondary">Custom Order</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SLIDE 3 -->
+    <div class="slide">
+        <div class="slide-img">
+            <img src="https://i.ibb.co/yF9Hjtg8/33be8a24b238fd3544e14dc32ac63861.jpg" alt="Slide 3" />
+        </div>
+        <div class="slide-overlay"></div>
+        <div class="slide-content">
+            <div class="slide-text">
+                <div class="slide-badge">Bags Collection</div>
+                <div class="slide-eyebrow">Premium crochet bags</div>
+                <h1 class="slide-title">Carry Art<br><em>Everywhere</em></h1>
+                <p class="slide-sub">Handwoven bags that turn heads — totes, backpacks, clutches crafted to last.</p>
+                <div class="hero-btns">
+                    <a href="/Shop?category=Bags" class="hero-btn-primary">Shop Bags</a>
+                    <a href="https://wa.me/2347036832309" class="hero-btn-secondary">WhatsApp Us</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SLIDE 4 -->
+    <div class="slide">
+        <div class="slide-img">
+            <img src="https://i.ibb.co/4Z4kfYt3/52729511d9236c7ee005d606482170c8.jpg" alt="Slide 4" />
+        </div>
+        <div class="slide-overlay"></div>
+        <div class="slide-content">
+            <div class="slide-text">
+                <div class="slide-badge">Sweaters & Knitwear</div>
+                <div class="slide-eyebrow">Stay cosy in style</div>
+                <h1 class="slide-title">Colour, Warmth<br><em>& Character</em></h1>
+                <p class="slide-sub">Vibrant handcrafted sweaters made for women who refuse to blend in.</p>
+                <div class="hero-btns">
+                    <a href="/Shop?category=Clothing" class="hero-btn-primary">Shop Now</a>
+                    <a href="https://wa.me/2347036832309" class="hero-btn-secondary">Order Custom</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="hero-count"><span id="heroCurr">01</span> / 04</div>
+    <div class="hero-progress" id="heroProgress"></div>
+    <div class="hero-nav">
+        <div class="hero-dot active" onclick="heroGoTo(0)"></div>
+        <div class="hero-dot" onclick="heroGoTo(1)"></div>
+        <div class="hero-dot" onclick="heroGoTo(2)"></div>
+        <div class="hero-dot" onclick="heroGoTo(3)"></div>
+    </div>
+    <div class="hero-arrows">
+        <button class="hero-arrow" onclick="heroPrev()">&#8592;</button>
+        <button class="hero-arrow" onclick="heroNext()">&#8594;</button>
     </div>
 </section>
 
 <!-- CATEGORIES -->
-<section style="padding: 80px 40px; max-width:1200px; margin:0 auto;">
+<section style="padding:80px 40px; max-width:1200px; margin:0 auto;">
     <div style="text-align:center; margin-bottom:48px;">
         <div class="section-eyebrow">Browse by Category</div>
         <h2 class="section-title">Shop Our Collections</h2>
         <div class="section-divider" style="margin:16px auto 0;"></div>
     </div>
-
-    <div style="display:grid; grid-template-columns:1fr 1fr; gap:24px;">
-        <a href="/Shop" class="category-card" style="text-decoration:none;">
-            <div style="width:100%; height:100%; background:linear-gradient(135deg, #f5ede6, #e8d0c0); display:flex; align-items:center; justify-content:center; min-height:300px;">
-                <i class="bi bi-handbag-fill" style="font-size:80px; color:#c4714a; opacity:0.4;"></i>
-            </div>
+    <div class="category-grid">
+        <a href="/Shop?category=Bags" class="category-card" style="text-decoration:none; height:420px;">
+            <img src="https://i.ibb.co/cSLnwmFV/94258005f0ab692d6d06cbe4fb4dcaf4.jpg" alt="Bags" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover;" />
             <div class="category-overlay">
                 <div>
                     <div class="category-name">Bags</div>
@@ -49,11 +159,8 @@
                 </div>
             </div>
         </a>
-
-        <a href="/Shop" class="category-card" style="text-decoration:none;">
-            <div style="width:100%; height:100%; background:linear-gradient(135deg, #f7eeec, #e8d4d0); display:flex; align-items:center; justify-content:center; min-height:300px;">
-                <i class="bi bi-person-fill" style="font-size:80px; color:#d4948a; opacity:0.4;"></i>
-            </div>
+        <a href="/Shop?category=Clothing" class="category-card" style="text-decoration:none; height:420px;">
+            <img src="https://i.ibb.co/WWyq8jBK/d59d7e8ea681a789b5996846ce63f1ea.jpg" alt="Clothing" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover;" />
             <div class="category-overlay">
                 <div>
                     <div class="category-name">Clothing</div>
@@ -64,15 +171,32 @@
     </div>
 </section>
 
+<style>
+    .category-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 24px;
+    }
+
+    @@media(max-width: 600px) {
+        .category-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .category-card {
+            height: 280px !important;
+        }
+    }
+</style>
+
 <!-- WHY YASMAH -->
 <section style="background:#2c1a0e; padding:80px 40px;">
     <div style="max-width:1200px; margin:0 auto;">
         <div style="text-align:center; margin-bottom:48px;">
             <div style="font-size:10px; font-weight:600; letter-spacing:4px; text-transform:uppercase; color:#c4714a; margin-bottom:8px;">Why Choose Us</div>
-            <h2 style="font-family:'Cormorant Garamond',serif; font-size:40px; font-weight:600; color:white; line-height:1.2;">Made Different. Made Better.</h2>
+            <h2 style="font-family:'Cormorant Garamond',serif; font-size:40px; font-weight:600; color:white;">Made Different. Made Better.</h2>
         </div>
-
-        <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:32px;">
+        <div class="why-grid">
             <div style="text-align:center; padding:32px 24px;">
                 <div style="width:64px; height:64px; background:rgba(196,113,74,0.15); border-radius:50%; display:flex; align-items:center; justify-content:center; margin:0 auto 20px; font-size:28px; color:#c4714a;">
                     <i class="bi bi-heart-fill"></i>
@@ -80,7 +204,6 @@
                 <h3 style="font-family:'Cormorant Garamond',serif; font-size:22px; color:white; margin-bottom:12px;">Made with Love</h3>
                 <p style="font-size:14px; color:rgba(255,255,255,0.5); line-height:1.7; font-weight:300;">Every stitch is placed with care and intention. No two pieces are exactly alike.</p>
             </div>
-
             <div style="text-align:center; padding:32px 24px;">
                 <div style="width:64px; height:64px; background:rgba(196,113,74,0.15); border-radius:50%; display:flex; align-items:center; justify-content:center; margin:0 auto 20px; font-size:28px; color:#c4714a;">
                     <i class="bi bi-star-fill"></i>
@@ -88,7 +211,6 @@
                 <h3 style="font-family:'Cormorant Garamond',serif; font-size:22px; color:white; margin-bottom:12px;">Premium Quality</h3>
                 <p style="font-size:14px; color:rgba(255,255,255,0.5); line-height:1.7; font-weight:300;">Only the finest yarns and materials are used to create pieces that last.</p>
             </div>
-
             <div style="text-align:center; padding:32px 24px;">
                 <div style="width:64px; height:64px; background:rgba(196,113,74,0.15); border-radius:50%; display:flex; align-items:center; justify-content:center; margin:0 auto 20px; font-size:28px; color:#c4714a;">
                     <i class="bi bi-truck"></i>
@@ -100,6 +222,28 @@
     </div>
 </section>
 
+<style>
+    .why-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 32px;
+    }
+
+    @@media(max-width: 768px) {
+        .why-grid {
+            grid-template-columns: 1fr;
+            gap: 0;
+        }
+
+        .why-grid > div {
+            padding: 24px 16px;
+            border-bottom: 1px solid rgba(255,255,255,0.07);
+        }
+
+        .why-grid > div:last-child { border-bottom: none; }
+    }
+</style>
+
 <!-- CTA -->
 <section style="padding:80px 40px; text-align:center; background:#faf6f1;">
     <div style="max-width:600px; margin:0 auto;">
@@ -109,8 +253,42 @@
         <p style="font-size:15px; color:#9c7b6a; line-height:1.8; margin-bottom:32px; font-weight:300;">
             Want something made just for you? Reach out on WhatsApp and let's create your perfect piece together.
         </p>
-        <a href="https://wa.me/2347036832309?text=Hi%20Yasmah%2C%20I%20would%20like%20to%20place%20a%20custom%20order" class="whatsapp-btn" style="font-size:15px; padding:14px 32px;">
+        <a href="https://wa.me/2347036832309?text=Hi%20Yasmah%2C%20I%20would%20like%20to%20place%20a%20custom%20order" class="whatsapp-btn" style="font-size:15px; padding:14px 32px; display:inline-flex; width:auto;">
             <i class="bi bi-whatsapp"></i> Chat with Yasmah
         </a>
     </div>
 </section>
+
+<script>
+    let heroCur=0,heroTot=4,heroProgVal=0,heroProgTimer;
+    const heroSlides=document.querySelectorAll('.slide');
+    const heroDots=document.querySelectorAll('.hero-dot');
+    const heroCurrEl=document.getElementById('heroCurr');
+    const heroProgEl=document.getElementById('heroProgress');
+
+    function heroGoTo(n){
+        heroSlides[heroCur].classList.remove('active');
+        heroDots[heroCur].classList.remove('active');
+        heroCur=n;
+        heroSlides[heroCur].classList.add('active');
+        heroDots[heroCur].classList.add('active');
+        heroCurrEl.textContent=String(heroCur+1).padStart(2,'0');
+        heroResetProg();
+    }
+
+    function heroNext(){heroGoTo((heroCur+1)%heroTot)}
+    function heroPrev(){heroGoTo((heroCur-1+heroTot)%heroTot)}
+
+    function heroResetProg(){
+        clearInterval(heroProgTimer);
+        heroProgVal=0;
+        heroProgEl.style.width='0%';
+        heroProgTimer=setInterval(()=>{
+            heroProgVal+=0.33;
+            heroProgEl.style.width=heroProgVal+'%';
+            if(heroProgVal>=100){clearInterval(heroProgTimer);heroNext()}
+        },33);
+    }
+
+    heroResetProg();
+</script>

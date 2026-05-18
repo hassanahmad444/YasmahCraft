@@ -1,0 +1,186 @@
+@model YasmahCraft.Models.Entities.Product
+@{
+    ViewData["Title"] = Model?.Name ?? "Product";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    .details-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 48px 40px;
+    }
+
+    .details-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 64px;
+        align-items: start;
+    }
+
+    .assurance-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+    }
+
+    .details-actions {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    @@media(max-width: 768px) {
+        .details-container {
+            padding: 24px 20px;
+        }
+
+        .details-grid {
+            grid-template-columns: 1fr;
+            gap: 28px;
+        }
+
+        .details-actions .btn-terra,
+        .details-actions .whatsapp-btn,
+        .details-actions .btn-outline-terra {
+            width: 100% !important;
+            justify-content: center !important;
+        }
+
+        .assurance-grid {
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+    }
+
+    @@media(max-width: 480px) {
+        .assurance-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+
+<div class="details-container">
+
+    <!-- BREADCRUMB -->
+    <div style="font-size:12px; color:#9c7b6a; margin-bottom:32px; display:flex; flex-wrap:wrap; gap:4px; align-items:center;">
+        <a href="/" style="color:#9c7b6a; text-decoration:none;">Home</a>
+        <span style="margin:0 4px;">→</span>
+        <a href="/Shop" style="color:#9c7b6a; text-decoration:none;">Shop</a>
+        <span style="margin:0 4px;">→</span>
+        <span style="color:#2c1a0e; font-weight:600;">@Model?.Name</span>
+    </div>
+
+    <div class="details-grid">
+
+        <!-- PRODUCT IMAGE -->
+        <div>
+            <div style="aspect-ratio:3/4; background:linear-gradient(135deg,#f5ede6,#f7eeec); border-radius:4px; overflow:hidden; border:1px solid #e8d8cc;">
+                @if (!string.IsNullOrEmpty(Model?.ImageUrl))
+                {
+                    <img src="@Model.ImageUrl" alt="@Model.Name" style="width:100%; height:100%; object-fit:cover;" />
+                }
+                else
+                {
+                    <div style="width:100%; height:100%; display:flex; align-items:center; justify-content:center; flex-direction:column; gap:16px;">
+                        <i class="bi bi-image" style="font-size:64px; color:#e8d8cc;"></i>
+                        <p style="font-size:13px; color:#c4a99a; font-weight:300;">No image available</p>
+                    </div>
+                }
+            </div>
+        </div>
+
+        <!-- PRODUCT INFO -->
+        <div>
+            <div style="font-size:11px; font-weight:600; letter-spacing:2px; text-transform:uppercase; color:#c4714a; margin-bottom:8px;">
+                @Model?.Category?.Name
+            </div>
+            <h1 style="font-family:'Cormorant Garamond',serif; font-size:42px; font-weight:600; color:#2c1a0e; line-height:1.2; margin-bottom:16px;">
+                @Model?.Name
+            </h1>
+            <div style="font-size:28px; font-weight:700; color:#c4714a; margin-bottom:24px;">
+                ₦@Model?.Price.ToString("N0")
+            </div>
+
+            @if (!string.IsNullOrEmpty(Model?.Colour))
+            {
+                <div style="margin-bottom:20px;">
+                    <div style="font-size:11px; font-weight:600; letter-spacing:1px; text-transform:uppercase; color:#9c7b6a; margin-bottom:8px;">Colour</div>
+                    <div style="font-size:14px; color:#2c1a0e; font-weight:500;">@Model.Colour</div>
+                </div>
+            }
+
+            @if (Model?.Sizes != null && Model.Sizes.Any())
+            {
+                <div style="margin-bottom:24px;">
+                    <div style="font-size:11px; font-weight:600; letter-spacing:1px; text-transform:uppercase; color:#9c7b6a; margin-bottom:12px;">Available Sizes</div>
+                    <div style="display:flex; gap:8px; flex-wrap:wrap;">
+                        @foreach (var size in Model.Sizes)
+                        {
+                            <span style="border:1px solid #e8d8cc; border-radius:2px; padding:6px 16px; font-size:13px; font-weight:600; color:#2c1a0e; cursor:pointer;">
+                                @size.Size
+                            </span>
+                        }
+                    </div>
+                </div>
+            }
+
+            <div style="margin-bottom:24px;">
+                <div style="font-size:11px; font-weight:600; letter-spacing:1px; text-transform:uppercase; color:#9c7b6a; margin-bottom:12px;">Description</div>
+                <p style="font-size:14px; color:#6b4c3b; line-height:1.8; font-weight:300;">@Model?.Description</p>
+            </div>
+
+            @if (Model?.StockQuantity > 0 && Model.IsAvailable)
+            {
+                <div style="display:flex; align-items:center; gap:8px; margin-bottom:28px;">
+                    <div style="width:8px; height:8px; background:#16a34a; border-radius:50%;"></div>
+                    <span style="font-size:13px; color:#16a34a; font-weight:600;">In Stock (@Model.StockQuantity available)</span>
+                </div>
+            }
+            else
+            {
+                <div style="display:flex; align-items:center; gap:8px; margin-bottom:28px;">
+                    <div style="width:8px; height:8px; background:#dc2626; border-radius:50%;"></div>
+                    <span style="font-size:13px; color:#dc2626; font-weight:600;">Out of Stock</span>
+                </div>
+            }
+
+            <!-- ACTION BUTTONS -->
+            <div class="details-actions">
+                <a href="/Order/Checkout?productId=@Model?.Id&size=@(Model?.Sizes.FirstOrDefault()?.Size ?? "Free Size")"
+                   class="btn-terra" style="justify-content:center; padding:14px 24px; font-size:14px; border-radius:2px; width:100%;">
+                    <i class="bi bi-credit-card-fill"></i> Buy Now — Pay Online
+                </a>
+                <a href="https://wa.me/2347036832309?text=Hi%20Yasmah%2C%20I%20want%20to%20order%20@Uri.EscapeDataString(Model?.Name ?? " ")"
+                   class="whatsapp-btn" style="justify-content:center; padding:14px 24px; width:100%;">
+                    <i class="bi bi-whatsapp"></i> Order via WhatsApp
+                </a>
+                <a href="/Shop" class="btn-outline-terra" style="justify-content:center; padding:14px 24px; width:100%;">
+                    <i class="bi bi-arrow-left"></i> Continue Shopping
+                </a>
+            </div>
+
+            <!-- ASSURANCE -->
+            <div style="margin-top:32px; padding-top:24px; border-top:1px solid #e8d8cc;">
+                <div class="assurance-grid">
+                    <div style="display:flex; align-items:center; gap:8px;">
+                        <i class="bi bi-shield-check" style="color:#c4714a; font-size:18px;"></i>
+                        <span style="font-size:12px; color:#9c7b6a;">Handcrafted Quality</span>
+                    </div>
+                    <div style="display:flex; align-items:center; gap:8px;">
+                        <i class="bi bi-truck" style="color:#c4714a; font-size:18px;"></i>
+                        <span style="font-size:12px; color:#9c7b6a;">Nationwide Delivery</span>
+                    </div>
+                    <div style="display:flex; align-items:center; gap:8px;">
+                        <i class="bi bi-whatsapp" style="color:#c4714a; font-size:18px;"></i>
+                        <span style="font-size:12px; color:#9c7b6a;">WhatsApp Support</span>
+                    </div>
+                    <div style="display:flex; align-items:center; gap:8px;">
+                        <i class="bi bi-heart" style="color:#c4714a; font-size:18px;"></i>
+                        <span style="font-size:12px; color:#9c7b6a;">Made with Love</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

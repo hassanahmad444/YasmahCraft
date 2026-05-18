@@ -6,6 +6,7 @@ namespace YasmahCraft.Services
     public interface IProductService
     {
         Task<List<Category>> GetAllCategoriesAsync();
+        Task<List<Product>> GetProductsByCategoryNameAsync(string categoryName);
         Task<List<Product>> GetProductsByCategoryAsync(Guid categoryId);
         Task<List<Product>> GetAllProductsAsync();
         Task<Product?> GetProductByIdAsync(Guid id);

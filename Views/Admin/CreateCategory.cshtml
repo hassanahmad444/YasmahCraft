@@ -1,0 +1,47 @@
+@model YasmahCraft.ViewModels.CreateCategoryViewModel
+@{
+    ViewData["Title"] = "Add Category";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div style="max-width:500px;">
+    <div class="section-header">
+        <div>
+            <div style="font-size:20px; font-weight:700; color:#2c1a0e;">Add Category</div>
+            <div style="font-size:13px; color:#9c7b6a; margin-top:2px;">Create a new product category</div>
+        </div>
+        <a href="/Admin/Categories" class="btn-outline-terra">
+            <i class="bi bi-arrow-left"></i> Back
+        </a>
+    </div>
+
+    <div class="admin-card">
+        <form asp-action="CreateCategory" asp-controller="Admin" method="post">
+            @Html.AntiForgeryToken()
+            <div asp-validation-summary="ModelOnly" style="color:#dc2626; font-size:13px; margin-bottom:16px;"></div>
+
+            <div style="margin-bottom:16px;">
+                <label class="form-label-craft">Category Name</label>
+                <input asp-for="Name" class="form-control-craft" placeholder="e.g. Bags" />
+                <span asp-validation-for="Name" style="color:#dc2626; font-size:12px;"></span>
+            </div>
+
+            <div style="margin-bottom:16px;">
+                <label class="form-label-craft">Description <span style="color:#9c7b6a; font-weight:300;">(Optional)</span></label>
+                <input asp-for="Description" class="form-control-craft" placeholder="e.g. Handcrafted crochet bags" />
+            </div>
+
+            <div style="margin-bottom:24px;">
+                <label class="form-label-craft">Image URL <span style="color:#9c7b6a; font-weight:300;">(Optional)</span></label>
+                <input asp-for="ImageUrl" class="form-control-craft" placeholder="https://..." />
+            </div>
+
+            <div style="display:flex; gap:12px;">
+                <button type="submit" class="btn-terra">
+                    <i class="bi bi-folder-plus"></i> Create Category
+                </button>
+                <a href="/Admin/Categories" class="btn-outline-terra">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,125 @@
+@model YasmahCraft.Models.Entities.Order
+@{
+    ViewData["Title"] = "Order Confirmed";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    .confirm-container {
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 80px 40px;
+        text-align: center;
+    }
+
+    .confirm-detail-row {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 12px;
+        font-size: 14px;
+        flex-wrap: wrap;
+        gap: 4px;
+    }
+
+    .confirm-btns {
+        display: flex;
+        gap: 16px;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    @@media(max-width: 768px) {
+        .confirm-container {
+            padding: 48px 20px;
+        }
+
+        .confirm-container h1 {
+            font-size: 36px !important;
+        }
+
+        .confirm-btns .btn-terra,
+        .confirm-btns .whatsapp-btn {
+            width: 100%;
+            justify-content: center;
+        }
+    }
+</style>
+
+<div class="confirm-container">
+    <div style="width:96px; height:96px; background:#f0fdf4; border-radius:50%; display:flex; align-items:center; justify-content:center; margin:0 auto 24px; font-size:48px; color:#16a34a; border:2px solid #bbf7d0;">
+        <i class="bi bi-check-lg"></i>
+    </div>
+    <div style="font-size:10px; font-weight:600; letter-spacing:4px; text-transform:uppercase; color:#c4714a; margin-bottom:8px;">
+        Payment Successful
+    </div>
+    <h1 style="font-family:'Cormorant Garamond',serif; font-size:48px; font-weight:600; color:#2c1a0e; margin-bottom:12px;">
+        Order Confirmed!
+    </h1>
+    <p style="font-size:15px; color:#9c7b6a; font-weight:300; line-height:1.8; margin-bottom:40px;">
+        Thank you for your order, <strong style="color:#2c1a0e;">@Model?.CustomerName</strong>! Your payment has been received and your order is being processed.
+    </p>
+
+    <div style="background:white; border:1px solid #e8d8cc; border-radius:4px; padding:24px; text-align:left; margin-bottom:32px;">
+        <div style="font-size:11px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:#9c7b6a; margin-bottom:16px;">
+            Order Details
+        </div>
+        <div class="confirm-detail-row">
+            <span style="color:#9c7b6a;">Order Number</span>
+            <span style="font-weight:800; color:#c4714a; font-family:'Cormorant Garamond',serif; font-size:18px;">@Model?.OrderNumber</span>
+        </div>
+        <div class="confirm-detail-row">
+            <span style="color:#9c7b6a;">Customer Name</span>
+            <span style="font-weight:600; color:#2c1a0e;">@Model?.CustomerName</span>
+        </div>
+        <div class="confirm-detail-row">
+            <span style="color:#9c7b6a;">Phone</span>
+            <span style="font-weight:600; color:#2c1a0e;">@Model?.CustomerPhone</span>
+        </div>
+        <div class="confirm-detail-row">
+            <span style="color:#9c7b6a;">Delivery Address</span>
+            <span style="font-weight:600; color:#2c1a0e; text-align:right; max-width:60%;">@Model?.DeliveryAddress</span>
+        </div>
+        <div style="border-top:1px solid #e8d8cc; margin-top:16px; padding-top:16px; display:flex; justify-content:space-between;">
+            <span style="font-size:15px; font-weight:700; color:#2c1a0e;">Total Paid</span>
+            <span style="font-size:20px; font-weight:800; color:#c4714a;">₦@Model?.TotalAmount.ToString("N0")</span>
+        </div>
+    </div>
+
+    @if (Model?.OrderItems != null && Model.OrderItems.Any())
+    {
+        <div style="background:white; border:1px solid #e8d8cc; border-radius:4px; padding:24px; text-align:left; margin-bottom:32px;">
+            <div style="font-size:11px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:#9c7b6a; margin-bottom:16px;">
+                Items Ordered
+            </div>
+            @foreach (var item in Model.OrderItems)
+            {
+                <div style="display:flex; justify-content:space-between; align-items:center; padding:12px 0; border-bottom:1px solid #f5ede6; flex-wrap:wrap; gap:4px;">
+                    <div>
+                        <div style="font-weight:600; color:#2c1a0e; font-size:14px;">@item.Product?.Name</div>
+                        <div style="font-size:12px; color:#9c7b6a;">Size: @item.Size · Qty: @item.Quantity</div>
+                    </div>
+                    <div style="font-weight:700; color:#c4714a;">₦@item.UnitPrice.ToString("N0")</div>
+                </div>
+            }
+        </div>
+    }
+
+    <div style="background:#f5ede6; border-radius:4px; padding:20px; margin-bottom:32px; text-align:left;">
+        <div style="font-size:13px; font-weight:700; color:#2c1a0e; margin-bottom:12px;">
+            <i class="bi bi-info-circle" style="color:#c4714a;"></i> What happens next?
+        </div>
+        <div style="font-size:13px; color:#6b4c3b; line-height:1.8; font-weight:300;">
+            Yasmah will contact you on <strong>@Model?.CustomerPhone</strong> within 24 hours to arrange delivery.
+        </div>
+    </div>
+
+    <div class="confirm-btns">
+        <a href="/Shop" class="btn-terra" style="width:auto;">
+            <i class="bi bi-bag-fill"></i> Continue Shopping
+        </a>
+        <a href="https://wa.me/2347036832309?text=Hi%20Yasmah%2C%20I%20just%20placed%20order%20@Model?.OrderNumber"
+           class="whatsapp-btn" style="width:auto;">
+            <i class="bi bi-whatsapp"></i> Contact Yasmah
+        </a>
+    </div>
+</div>

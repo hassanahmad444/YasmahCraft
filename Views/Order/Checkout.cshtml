@@ -1,0 +1,144 @@
+@model YasmahCraft.ViewModels.PlaceOrderViewModel
+@{
+    ViewData["Title"] = "Checkout";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var product = ViewBag.Product as YasmahCraft.Models.Entities.Product;
+}
+
+<style>
+    .checkout-container {
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 48px 40px;
+    }
+
+    .checkout-grid {
+        display: grid;
+        grid-template-columns: 1fr 1.2fr;
+        gap: 40px;
+        align-items: start;
+    }
+
+    @@media(max-width: 768px) {
+        .checkout-container {
+            padding: 32px 20px;
+        }
+
+        .checkout-container h1 {
+            font-size: 32px !important;
+        }
+
+        .checkout-grid {
+            grid-template-columns: 1fr;
+            gap: 24px;
+        }
+
+        /* show summary second on mobile (form first) */
+        .checkout-summary { order: 2; }
+        .checkout-form { order: 1; }
+
+        .checkout-submit {
+            width: 100% !important;
+            justify-content: center !important;
+        }
+    }
+</style>
+
+<div class="checkout-container">
+    <div style="text-align:center; margin-bottom:40px;">
+        <div style="font-size:10px; font-weight:600; letter-spacing:4px; text-transform:uppercase; color:#c4714a; margin-bottom:8px;">
+            Almost There
+        </div>
+        <h1 style="font-family:'Cormorant Garamond',serif; font-size:42px; font-weight:600; color:#2c1a0e;">
+            Complete Your Order
+        </h1>
+    </div>
+
+    <div class="checkout-grid">
+
+        <!-- ORDER SUMMARY -->
+        <div class="checkout-summary">
+            <div style="font-size:11px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:#9c7b6a; margin-bottom:16px;">
+                Order Summary
+            </div>
+            <div style="background:white; border:1px solid #e8d8cc; border-radius:4px; padding:20px;">
+                @if (product != null)
+                {
+                    <div style="display:flex; gap:16px; align-items:center;">
+                        <div style="width:80px; height:80px; background:#f5ede6; border-radius:4px; overflow:hidden; flex-shrink:0;">
+                            @if (!string.IsNullOrEmpty(product.ImageUrl))
+                            {
+                                <img src="@product.ImageUrl" alt="@product.Name" style="width:100%; height:100%; object-fit:cover;" />
+                            }
+                        </div>
+                        <div>
+                            <div style="font-family:'Cormorant Garamond',serif; font-size:18px; font-weight:600; color:#2c1a0e;">@product.Name</div>
+                            <div style="font-size:12px; color:#9c7b6a; margin-top:2px;">@product.Category?.Name</div>
+                            @if (Model.CartItems.Any())
+                            {
+                                <div style="font-size:12px; color:#9c7b6a;">Size: @Model.CartItems[0].Size</div>
+                            }
+                            <div style="font-size:16px; font-weight:700; color:#c4714a; margin-top:4px;">₦@product.Price.ToString("N0")</div>
+                        </div>
+                    </div>
+                }
+                <div style="border-top:1px solid #e8d8cc; margin-top:20px; padding-top:16px;">
+                    <div style="display:flex; justify-content:space-between; font-size:16px; font-weight:700; color:#2c1a0e; padding-top:12px;">
+                        <span>Total</span>
+                        <span style="color:#c4714a;">₦@Model.CartItems.Sum(i => i.TotalPrice).ToString("N0")</span>
+                    </div>
+                </div>
+            </div>
+            <div style="margin-top:16px; background:#f5ede6; border-radius:4px; padding:16px;">
+                <div style="font-size:12px; color:#6b4c3b; display:flex; align-items:center; gap:8px;">
+                    <i class="bi bi-shield-check" style="color:#c4714a;"></i>
+                    <strong>Secure Payment via Paystack</strong>
+                </div>
+            </div>
+        </div>
+
+        <!-- FORM -->
+        <div class="checkout-form">
+            <div style="font-size:11px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:#9c7b6a; margin-bottom:16px;">
+                Your Details
+            </div>
+            <div style="background:white; border:1px solid #e8d8cc; border-radius:4px; padding:24px;">
+                <form asp-action="Checkout" asp-controller="Order" method="post">
+                    @Html.AntiForgeryToken()
+                    @foreach (var item in Model.CartItems)
+                    {
+                        <input type="hidden" name="CartItems[@Model.CartItems.IndexOf(item)].ProductId" value="@item.ProductId" />
+                        <input type="hidden" name="CartItems[@Model.CartItems.IndexOf(item)].ProductName" value="@item.ProductName" />
+                        <input type="hidden" name="CartItems[@Model.CartItems.IndexOf(item)].Size" value="@item.Size" />
+                        <input type="hidden" name="CartItems[@Model.CartItems.IndexOf(item)].Quantity" value="@item.Quantity" />
+                        <input type="hidden" name="CartItems[@Model.CartItems.IndexOf(item)].UnitPrice" value="@item.UnitPrice" />
+                    }
+                    <div asp-validation-summary="ModelOnly" style="color:#dc2626; font-size:13px; margin-bottom:16px;"></div>
+                    <div style="margin-bottom:16px;">
+                        <label class="form-label-craft">Full Name</label>
+                        <input asp-for="CustomerName" class="form-control-craft" placeholder="e.g. Fatima Adebayo" />
+                        <span asp-validation-for="CustomerName" style="color:#dc2626; font-size:12px;"></span>
+                    </div>
+                    <div style="margin-bottom:16px;">
+                        <label class="form-label-craft">Email Address</label>
+                        <input asp-for="CustomerEmail" type="email" class="form-control-craft" placeholder="e.g. fatima@gmail.com" />
+                        <span asp-validation-for="CustomerEmail" style="color:#dc2626; font-size:12px;"></span>
+                    </div>
+                    <div style="margin-bottom:16px;">
+                        <label class="form-label-craft">Phone Number</label>
+                        <input asp-for="CustomerPhone" class="form-control-craft" placeholder="e.g. 08012345678" />
+                        <span asp-validation-for="CustomerPhone" style="color:#dc2626; font-size:12px;"></span>
+                    </div>
+                    <div style="margin-bottom:24px;">
+                        <label class="form-label-craft">Delivery Address</label>
+                        <textarea asp-for="DeliveryAddress" class="form-control-craft" rows="3" placeholder="Full address including city and state"></textarea>
+                        <span asp-validation-for="DeliveryAddress" style="color:#dc2626; font-size:12px;"></span>
+                    </div>
+                    <button type="submit" class="btn-terra checkout-submit" style="width:100%; justify-content:center; padding:14px; font-size:14px;">
+                        <i class="bi bi-credit-card-fill"></i> Proceed to Payment
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,176 @@
+@model List<YasmahCraft.Models.Entities.Product>
+@{
+    ViewData["Title"] = "Shop";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    .shop-header {
+        background: linear-gradient(135deg, #f5ede6, #f7eeec);
+        padding: 64px 40px;
+        text-align: center;
+        border-bottom: 1px solid #e8d8cc;
+    }
+
+    .shop-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 48px 40px;
+    }
+
+    .product-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 24px;
+    }
+
+    .shop-meta {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 32px;
+    }
+
+    @@media(max-width: 900px) {
+        .product-grid {
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+        }
+    }
+
+    @@media(max-width: 768px) {
+        .shop-header {
+            padding: 48px 24px;
+        }
+
+        .shop-header h1 {
+            font-size: 36px !important;
+        }
+
+        .shop-container {
+            padding: 32px 20px;
+        }
+
+        .shop-meta {
+            margin-bottom: 20px;
+        }
+    }
+
+    @@media(max-width: 480px) {
+        .product-grid {
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+
+        .product-body {
+            padding: 12px !important;
+        }
+
+        .product-name {
+            font-size: 16px !important;
+        }
+
+        .product-price {
+            font-size: 14px !important;
+        }
+
+        .product-card .btn-terra,
+        .product-card .whatsapp-btn {
+            padding: 7px 10px !important;
+            font-size: 10px !important;
+            width: auto !important;
+        }
+    }
+</style>
+
+<!-- PAGE HEADER -->
+<div class="shop-header">
+    <div style="font-size:10px; font-weight:600; letter-spacing:4px; text-transform:uppercase; color:#c4714a; margin-bottom:8px;">
+        Our Collection
+    </div>
+    <h1 style="font-family:'Cormorant Garamond',serif; font-size:48px; font-weight:600; color:#2c1a0e; line-height:1.2;">
+        Shop All Products
+    </h1>
+    <p style="font-size:14px; color:#9c7b6a; margin-top:12px; font-weight:300;">
+        Handcrafted crochet pieces — every item made with love
+    </p>
+</div>
+
+<div class="shop-container">
+
+    @if (Model == null || !Model.Any())
+    {
+        <div style="text-align:center; padding:80px 0;">
+            <i class="bi bi-bag-x" style="font-size:64px; color:#e8d8cc; display:block; margin-bottom:24px;"></i>
+            <h3 style="font-family:'Cormorant Garamond',serif; font-size:28px; color:#2c1a0e; margin-bottom:12px;">No Products Yet</h3>
+            <p style="font-size:14px; color:#9c7b6a; margin-bottom:32px; font-weight:300;">Check back soon — new pieces are being crafted!</p>
+            <a href="https://wa.me/2347036832309" class="whatsapp-btn" style="display:inline-flex; width:auto;">
+                <i class="bi bi-whatsapp"></i> Ask about availability
+            </a>
+        </div>
+    }
+    else
+    {
+        <div class="shop-meta">
+            <p style="font-size:13px; color:#9c7b6a; font-weight:500;">
+                Showing <strong style="color:#2c1a0e;">@Model.Count</strong> pieces
+            </p>
+        </div>
+
+        <div class="product-grid">
+            @foreach (var product in Model)
+            {
+                <div class="product-card">
+                    <a href="/Shop/Details/@product.Id" style="text-decoration:none;">
+                        <div class="product-img-wrap">
+                            @if (!string.IsNullOrEmpty(product.ImageUrl))
+                            {
+                                <img src="@product.ImageUrl" alt="@product.Name" />
+                            }
+                            else
+                            {
+                                <div style="width:100%; height:100%; display:flex; align-items:center; justify-content:center; background:linear-gradient(135deg,#f5ede6,#f7eeec);">
+                                    <i class="bi bi-image" style="font-size:48px; color:#e8d8cc;"></i>
+                                </div>
+                            }
+                            @if (!product.IsAvailable || product.StockQuantity == 0)
+                            {
+                                <div class="product-badge" style="background:#6b4c3b;">Sold Out</div>
+                            }
+                            else
+                            {
+                                <div class="product-badge">New</div>
+                            }
+                        </div>
+                    </a>
+                    <div class="product-body" style="padding:16px;">
+                        <div class="product-category">@product.Category?.Name</div>
+                        <a href="/Shop/Details/@product.Id" style="text-decoration:none;">
+                            <div class="product-name">@product.Name</div>
+                        </a>
+                        @if (!string.IsNullOrEmpty(product.Colour))
+                        {
+                            <div style="font-size:12px; color:#9c7b6a; margin-bottom:4px;">@product.Colour</div>
+                        }
+                        <div class="product-price">₦@product.Price.ToString("N0")</div>
+                        <div class="product-sizes">
+                            @foreach (var size in product.Sizes)
+                            {
+                                <span class="size-chip">@size.Size</span>
+                            }
+                        </div>
+                        <div style="margin-top:16px; display:flex; gap:8px;">
+                            <a href="/Shop/Details/@product.Id" class="btn-terra" style="flex:1; justify-content:center; font-size:11px; padding:8px 12px; width:auto;">
+                                View Details
+                            </a>
+                            <a href="https://wa.me/2347036832309?text=Hi%20Yasmah%2C%20I%20want%20to%20order%20@Uri.EscapeDataString(product.Name)"
+                               class="whatsapp-btn" style="padding:8px 12px; font-size:11px; border-radius:2px; width:auto;">
+                                <i class="bi bi-whatsapp"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>

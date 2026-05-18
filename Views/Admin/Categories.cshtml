@@ -1,0 +1,67 @@
+@model List<YasmahCraft.Models.Entities.Category>
+@{
+    ViewData["Title"] = "Categories";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@if (TempData["Success"] != null)
+{
+    <div class="alert-craft">
+        <i class="bi bi-check-circle-fill"></i> @TempData["Success"]
+    </div>
+}
+
+<div class="section-header">
+    <div>
+        <div style="font-size:20px; font-weight:700; color:#2c1a0e;">Categories</div>
+        <div style="font-size:13px; color:#9c7b6a; margin-top:2px;">Organise your products by category</div>
+    </div>
+    <a href="/Admin/CreateCategory" class="btn-terra">
+        <i class="bi bi-plus-lg"></i> Add Category
+    </a>
+</div>
+
+<div class="admin-card">
+    @if (Model == null || !Model.Any())
+    {
+        <div style="text-align:center; padding:48px 0; color:#9c7b6a;">
+            <i class="bi bi-grid" style="font-size:48px; display:block; margin-bottom:16px; opacity:0.3;"></i>
+            <div style="font-size:15px; font-weight:600; color:#2c1a0e;">No categories yet</div>
+            <div style="font-size:13px; margin-top:4px;">Add categories like Bags, Clothing etc.</div>
+        </div>
+    }
+    else
+    {
+        <table class="admin-table">
+            <thead>
+                <tr>
+                    <th>Category Name</th>
+                    <th>Description</th>
+                    <th>Products</th>
+                    <th style="text-align:right;">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var category in Model)
+                {
+                    <tr>
+                        <td style="font-weight:600; color:#2c1a0e;">@category.Name</td>
+                        <td style="color:#9c7b6a;">@(category.Description ?? "—")</td>
+                        <td>@category.Products.Count items</td>
+                        <td style="text-align:right;">
+                            <form asp-action="DeleteCategory" asp-controller="Admin" method="post"
+                                  style="display:inline;"
+                                  onsubmit="return confirm('Delete @category.Name?')">
+                                <input type="hidden" name="id" value="@category.Id" />
+                                @Html.AntiForgeryToken()
+                                <button type="submit" class="btn-danger-sm">
+                                    <i class="bi bi-trash3"></i> Delete
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>

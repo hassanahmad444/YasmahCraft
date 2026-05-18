@@ -1,0 +1,72 @@
+@{
+    ViewData["Title"] = "Dashboard";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div style="margin-bottom:28px;">
+    <div style="font-size:22px; font-weight:700; color:#2c1a0e;">
+        Welcome back, Yasmah 👋
+    </div>
+    <div style="font-size:14px; color:#9c7b6a; margin-top:4px; font-weight:300;">
+        Here's an overview of your store
+    </div>
+</div>
+
+<div style="display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-bottom:28px;">
+    <div class="admin-stat-card">
+        <div class="admin-stat-icon"><i class="bi bi-bag-fill"></i></div>
+        <div>
+            <div class="admin-stat-value">@ViewBag.ProductCount</div>
+            <div class="admin-stat-label">Total Products</div>
+        </div>
+    </div>
+    <div class="admin-stat-card">
+        <div class="admin-stat-icon"><i class="bi bi-grid-fill"></i></div>
+        <div>
+            <div class="admin-stat-value">@ViewBag.CategoryCount</div>
+            <div class="admin-stat-label">Categories</div>
+        </div>
+    </div>
+    <div class="admin-stat-card">
+        <div class="admin-stat-icon"><i class="bi bi-receipt"></i></div>
+        <div>
+            <div class="admin-stat-value">0</div>
+            <div class="admin-stat-label">Total Orders</div>
+        </div>
+    </div>
+</div>
+
+<div style="display:grid; grid-template-columns:1fr 1fr; gap:16px;">
+    <div class="admin-card">
+        <div style="font-size:15px; font-weight:700; margin-bottom:16px; color:#2c1a0e;">
+            Quick Actions
+        </div>
+        <div style="display:flex; flex-direction:column; gap:10px;">
+            <a href="/Admin/CreateProduct" class="btn-terra" style="justify-content:center;">
+                <i class="bi bi-plus-circle-fill"></i> Add New Product
+            </a>
+            <a href="/Admin/CreateCategory" class="btn-outline-terra" style="justify-content:center;">
+                <i class="bi bi-folder-plus"></i> Add Category
+            </a>
+            <a href="/Admin/Products" class="btn-outline-terra" style="justify-content:center;">
+                <i class="bi bi-bag-fill"></i> Manage Products
+            </a>
+        </div>
+    </div>
+
+    <div class="admin-card">
+        <div style="font-size:15px; font-weight:700; margin-bottom:16px; color:#2c1a0e;">
+            Store Info
+        </div>
+        <div style="display:flex; flex-direction:column; gap:12px;">
+            <div style="display:flex; align-items:center; gap:10px; font-size:13px;">
+                <i class="bi bi-whatsapp" style="color:#25d366; font-size:16px;"></i>
+                <span style="color:#6b4c3b;">07036832309</span>
+            </div>
+            <div style="display:flex; align-items:center; gap:10px; font-size:13px;">
+                <i class="bi bi-shop" style="color:#c4714a; font-size:16px;"></i>
+                <a href="/Shop" style="color:#c4714a; text-decoration:none;">View your store →</a>
+            </div>
+        </div>
+    </div>
+</div>

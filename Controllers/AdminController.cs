@@ -6,17 +6,27 @@ using Microsoft.AspNetCore.Authorization;
 namespace YasmahCraft.Controllers
 {
     [Authorize(Roles = "Admin")]
+    
     public class AdminController : Controller
     {
         private readonly IProductService _productService;
-        public AdminController(IProductService productService)
+        private readonly IOrderService _orderService;
+
+        public AdminController(IProductService productService, IOrderService orderService)
         {
             _productService = productService;
+            _orderService = orderService;
+        }
+        public async Task<IActionResult> Orders()
+        {
+            var orders = await _orderService.GetAllOrdersAsync();
+            return View(orders);
         }
         public async Task<IActionResult> Index()
         {
-            var categories = await _productService.GetAllCategoriesAsync();
-            return View(categories);
+            ViewBag.ProductCount = (await _productService.GetAllProductsAsync()).Count;
+            ViewBag.CategoryCount = (await _productService.GetAllCategoriesAsync()).Count;
+            return View();
         }
 
         [HttpGet]
@@ -93,13 +103,20 @@ namespace YasmahCraft.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> EditCategory(Guid id, CreateCategoryViewModel model)
+        [HttpGet]
+        public async Task<IActionResult> EditCategory(Guid id)
         {
-            if (ModelState.IsValid)
+            var categories = await _productService.GetAllCategoriesAsync();
+            var cat = categories.FirstOrDefault(c => c.Id == id);
+            if (cat == null) return NotFound();
+
+            var model = new CreateCategoryViewModel
             {
-                await _productService.UpdateCategoryAsync(id, model);
-            }
-            return RedirectToAction(nameof(Index));
+                Name = cat.Name,
+                Description = cat.Description,
+                ImageUrl = cat.ImageUrl
+            };
+            return View(model);
         }
 
         public async Task<IActionResult> Products()

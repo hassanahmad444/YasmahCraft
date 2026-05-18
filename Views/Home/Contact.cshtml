@@ -1,0 +1,155 @@
+@{
+    ViewData["Title"] = "Contact Us";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    .contact-hero {
+        background: linear-gradient(135deg, #f5ede6, #f7eeec);
+        padding: 80px 40px;
+        text-align: center;
+    }
+
+    .contact-body {
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 80px 40px;
+    }
+
+    .contact-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 64px;
+    }
+
+    @@media(max-width: 768px) {
+        .contact-hero {
+            padding: 56px 24px;
+        }
+
+        .contact-hero h1 {
+            font-size: 36px !important;
+        }
+
+        .contact-body {
+            padding: 48px 24px;
+        }
+
+        .contact-grid {
+            grid-template-columns: 1fr;
+            gap: 40px;
+        }
+
+        .contact-whatsapp-btn {
+            width: 100% !important;
+            justify-content: center !important;
+        }
+
+        .contact-custom-btn {
+            width: 100% !important;
+            justify-content: center !important;
+        }
+    }
+</style>
+
+<!-- HEADER -->
+<section class="contact-hero">
+    <div style="font-size:10px; font-weight:600; letter-spacing:4px; text-transform:uppercase; color:#c4714a; margin-bottom:8px;">
+        Get In Touch
+    </div>
+    <h1 style="font-family:'Cormorant Garamond',serif; font-size:52px; font-weight:600; color:#2c1a0e; line-height:1.2;">
+        Contact Us
+    </h1>
+    <p style="font-size:15px; color:#9c7b6a; max-width:480px; margin:16px auto 0; line-height:1.8; font-weight:300;">
+        Have a question, custom order request, or just want to say hello? We'd love to hear from you.
+    </p>
+</section>
+
+<!-- CONTACT CONTENT -->
+<section class="contact-body">
+    <div class="contact-grid">
+
+        <!-- CONTACT INFO -->
+        <div>
+            <div style="font-size:10px; font-weight:600; letter-spacing:4px; text-transform:uppercase; color:#c4714a; margin-bottom:12px;">
+                Reach Us
+            </div>
+            <h2 style="font-family:'Cormorant Garamond',serif; font-size:36px; font-weight:600; color:#2c1a0e; margin-bottom:32px;">
+                We're Always Here
+            </h2>
+
+            <div style="display:flex; flex-direction:column; gap:24px;">
+                <div style="display:flex; align-items:flex-start; gap:16px;">
+                    <div style="width:44px; height:44px; background:#f5ede6; border-radius:50%; display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+                        <i class="bi bi-whatsapp" style="color:#25d366; font-size:20px;"></i>
+                    </div>
+                    <div>
+                        <div style="font-size:12px; font-weight:700; letter-spacing:1px; text-transform:uppercase; color:#9c7b6a; margin-bottom:4px;">WhatsApp</div>
+                        <a href="https://wa.me/2347036832309" style="font-size:16px; color:#2c1a0e; font-weight:600; text-decoration:none;">07036832309</a>
+                        <div style="font-size:12px; color:#9c7b6a; margin-top:2px; font-weight:300;">Fastest response — we reply within minutes</div>
+                    </div>
+                </div>
+
+                <div style="display:flex; align-items:flex-start; gap:16px;">
+                    <div style="width:44px; height:44px; background:#f5ede6; border-radius:50%; display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+                        <i class="bi bi-geo-alt-fill" style="color:#c4714a; font-size:20px;"></i>
+                    </div>
+                    <div>
+                        <div style="font-size:12px; font-weight:700; letter-spacing:1px; text-transform:uppercase; color:#9c7b6a; margin-bottom:4px;">Location</div>
+                        <div style="font-size:16px; color:#2c1a0e; font-weight:600;">Nigeria</div>
+                        <div style="font-size:12px; color:#9c7b6a; margin-top:2px; font-weight:300;">We deliver nationwide</div>
+                    </div>
+                </div>
+
+                <div style="display:flex; align-items:flex-start; gap:16px;">
+                    <div style="width:44px; height:44px; background:#f5ede6; border-radius:50%; display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+                        <i class="bi bi-clock-fill" style="color:#c4714a; font-size:20px;"></i>
+                    </div>
+                    <div>
+                        <div style="font-size:12px; font-weight:700; letter-spacing:1px; text-transform:uppercase; color:#9c7b6a; margin-bottom:4px;">Response Time</div>
+                        <div style="font-size:16px; color:#2c1a0e; font-weight:600;">Within 24 hours</div>
+                        <div style="font-size:12px; color:#9c7b6a; margin-top:2px; font-weight:300;">Monday — Saturday</div>
+                    </div>
+                </div>
+            </div>
+
+            <div style="margin-top:40px;">
+                <a href="https://wa.me/2347036832309?text=Hi%20Yasmah%2C%20I%20have%20a%20question%20about%20your%20products"
+                   class="whatsapp-btn contact-whatsapp-btn" style="padding:14px 24px; font-size:14px; border-radius:2px; display:inline-flex;">
+                    <i class="bi bi-whatsapp"></i> Chat with Us on WhatsApp
+                </a>
+            </div>
+        </div>
+
+        <!-- CUSTOM ORDER -->
+        <div style="background:#faf6f1; border:1px solid #e8d8cc; border-radius:4px; padding:32px;">
+            <div style="font-size:10px; font-weight:600; letter-spacing:4px; text-transform:uppercase; color:#c4714a; margin-bottom:8px;">
+                Custom Orders
+            </div>
+            <h3 style="font-family:'Cormorant Garamond',serif; font-size:28px; font-weight:600; color:#2c1a0e; margin-bottom:16px;">
+                Want Something Special?
+            </h3>
+            <p style="font-size:13px; color:#6b4c3b; line-height:1.8; margin-bottom:24px; font-weight:300;">
+                We love creating custom pieces! Whether you want a specific colour, size, or design — reach out and let's bring your vision to life.
+            </p>
+            <div style="display:flex; flex-direction:column; gap:12px; margin-bottom:24px;">
+                <div style="display:flex; align-items:center; gap:10px; font-size:13px; color:#6b4c3b;">
+                    <i class="bi bi-check-circle-fill" style="color:#c4714a;"></i> Custom colours and sizes
+                </div>
+                <div style="display:flex; align-items:center; gap:10px; font-size:13px; color:#6b4c3b;">
+                    <i class="bi bi-check-circle-fill" style="color:#c4714a;"></i> Personalised designs
+                </div>
+                <div style="display:flex; align-items:center; gap:10px; font-size:13px; color:#6b4c3b;">
+                    <i class="bi bi-check-circle-fill" style="color:#c4714a;"></i> Bulk orders for events
+                </div>
+                <div style="display:flex; align-items:center; gap:10px; font-size:13px; color:#6b4c3b;">
+                    <i class="bi bi-check-circle-fill" style="color:#c4714a;"></i> Gift wrapping available
+                </div>
+            </div>
+            <a href="https://wa.me/2347036832309?text=Hi%20Yasmah%2C%20I%20would%20like%20to%20place%20a%20custom%20order"
+               class="btn-terra contact-custom-btn" style="display:inline-flex; width:100%; justify-content:center;">
+                <i class="bi bi-bag-heart-fill"></i> Place Custom Order
+            </a>
+        </div>
+    </div>
+</section>

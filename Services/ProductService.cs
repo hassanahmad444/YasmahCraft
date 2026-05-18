@@ -138,5 +138,13 @@ namespace YasmahCraft.Services
                 .Include(p => p.Sizes)
                 .FirstOrDefaultAsync(p => p.Id == id);
         }
+        public async Task<List<Product>> GetProductsByCategoryNameAsync(string categoryName)
+        {
+            return await _context.Products
+                .Include(p => p.Category)
+                .Include(p => p.Sizes)
+                .Where(p => p.Category.Name.ToLower() == categoryName.ToLower())
+                .ToListAsync();
+        }
     }
 }

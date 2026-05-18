@@ -1,0 +1,93 @@
+@model YasmahCraft.ViewModels.CreateProductViewModel
+@{
+    ViewData["Title"] = "Add Product";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div style="max-width:700px;">
+    <div class="section-header">
+        <div>
+            <div style="font-size:20px; font-weight:700; color:#2c1a0e;">Add New Product</div>
+            <div style="font-size:13px; color:#9c7b6a; margin-top:2px;">Fill in the details for your new piece</div>
+        </div>
+        <a href="/Admin/Products" class="btn-outline-terra">
+            <i class="bi bi-arrow-left"></i> Back
+        </a>
+    </div>
+
+    <div class="admin-card">
+        <form asp-action="CreateProduct" asp-controller="Admin" method="post">
+            @Html.AntiForgeryToken()
+            <div asp-validation-summary="ModelOnly" style="color:#dc2626; font-size:13px; margin-bottom:16px;"></div>
+
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:16px;">
+                <div>
+                    <label class="form-label-craft">Product Name</label>
+                    <input asp-for="Name" class="form-control-craft" placeholder="e.g. Crochet Tote Bag" />
+                    <span asp-validation-for="Name" style="color:#dc2626; font-size:12px;"></span>
+                </div>
+                <div>
+                    <label class="form-label-craft">Category</label>
+                    <select asp-for="CategoryId" class="form-control-craft">
+                        <option value="">-- Select Category --</option>
+                        @foreach (var cat in ViewBag.Categories as List<YasmahCraft.Models.Entities.Category> ?? new())
+                        {
+                            <option value="@cat.Id">@cat.Name</option>
+                        }
+                    </select>
+                    <span asp-validation-for="CategoryId" style="color:#dc2626; font-size:12px;"></span>
+                </div>
+            </div>
+
+            <div style="margin-bottom:16px;">
+                <label class="form-label-craft">Description</label>
+                <textarea asp-for="Description" class="form-control-craft" rows="4" placeholder="Describe this piece — materials, style, occasion..."></textarea>
+                <span asp-validation-for="Description" style="color:#dc2626; font-size:12px;"></span>
+            </div>
+
+            <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:16px; margin-bottom:16px;">
+                <div>
+                    <label class="form-label-craft">Price (₦)</label>
+                    <input asp-for="Price" type="number" step="0.01" class="form-control-craft" placeholder="0.00" />
+                    <span asp-validation-for="Price" style="color:#dc2626; font-size:12px;"></span>
+                </div>
+                <div>
+                    <label class="form-label-craft">Stock Quantity</label>
+                    <input asp-for="StockQuantity" type="number" class="form-control-craft" placeholder="0" />
+                    <span asp-validation-for="StockQuantity" style="color:#dc2626; font-size:12px;"></span>
+                </div>
+                <div>
+                    <label class="form-label-craft">Colour</label>
+                    <input asp-for="Colour" class="form-control-craft" placeholder="e.g. Terracotta" />
+                </div>
+            </div>
+
+            <div style="margin-bottom:16px;">
+                <label class="form-label-craft">Image URL</label>
+                <input asp-for="ImageUrl" class="form-control-craft" placeholder="https://..." />
+                <div style="font-size:11px; color:#9c7b6a; margin-top:4px;">Paste a direct image link. Use Cloudinary or ImgBB to host images.</div>
+            </div>
+
+            <div style="margin-bottom:24px;">
+                <label class="form-label-craft">Available Sizes</label>
+                <div style="display:flex; gap:12px; flex-wrap:wrap; margin-top:8px;">
+                    @foreach (var size in new[] { "XS", "S", "M", "L", "XL", "XXL", "Free Size" })
+                    {
+                        <label style="display:flex; align-items:center; gap:6px; cursor:pointer; font-size:13px; font-weight:500; color:#6b4c3b;">
+                            <input type="checkbox" name="SelectedSizes" value="@size"
+                                   style="width:16px; height:16px; accent-color:#c4714a;" />
+                            @size
+                        </label>
+                    }
+                </div>
+            </div>
+
+            <div style="display:flex; gap:12px;">
+                <button type="submit" class="btn-terra">
+                    <i class="bi bi-bag-plus-fill"></i> Add Product
+                </button>
+                <a href="/Admin/Products" class="btn-outline-terra">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>

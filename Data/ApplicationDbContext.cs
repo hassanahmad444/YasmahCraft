@@ -16,7 +16,7 @@ namespace YasmahCraft.Data
         {
             base.OnModelCreating(modelBuilder);
 
-            // Ignore computed property
+            
             modelBuilder.Entity<OrderItem>()
                 .Ignore(o => o.TotalPrice);
 
