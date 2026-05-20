@@ -9,10 +9,10 @@ using YasmahCraft.Data;
 
 #nullable disable
 
-namespace YasmahCraft.Data.Migrations
+namespace YasmahCraft.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20260518230343_InitialPostgres")]
+    [Migration("20260520224923_InitialPostgres")]
     partial class InitialPostgres
     {
         /// <inheritdoc />

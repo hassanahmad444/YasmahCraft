@@ -2,7 +2,7 @@
 
 #nullable disable
 
-namespace YasmahCraft.Data.Migrations
+namespace YasmahCraft.Migrations
 {
     /// <inheritdoc />
     public partial class InitialPostgres : Migration
