@@ -12,11 +12,7 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 var isProduction = builder.Environment.IsProduction();
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
-    if (isProduction)
-        options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
-    else
-        options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
-
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
     options.ConfigureWarnings(w => w.Ignore(RelationalEventId.PendingModelChangesWarning));
 });
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
