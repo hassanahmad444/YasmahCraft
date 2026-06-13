@@ -41,7 +41,6 @@
         }
 
         .details-actions .btn-terra,
-        .details-actions .whatsapp-btn,
         .details-actions .btn-outline-terra {
             width: 100% !important;
             justify-content: center !important;
@@ -110,14 +109,19 @@
                 </div>
             }
 
+            @{
+                var firstSize = Model?.Sizes != null && Model.Sizes.Any() ? Model.Sizes.First().Size : "Free Size";
+            }
+
             @if (Model?.Sizes != null && Model.Sizes.Any())
             {
                 <div style="margin-bottom:24px;">
                     <div style="font-size:11px; font-weight:600; letter-spacing:1px; text-transform:uppercase; color:#9c7b6a; margin-bottom:12px;">Available Sizes</div>
-                    <div style="display:flex; gap:8px; flex-wrap:wrap;">
+                    <div style="display:flex; gap:8px; flex-wrap:wrap;" id="sizeOptions">
                         @foreach (var size in Model.Sizes)
                         {
-                            <span style="border:1px solid #e8d8cc; border-radius:2px; padding:6px 16px; font-size:13px; font-weight:600; color:#2c1a0e; cursor:pointer;">
+                            <span class="size-chip-select @(size.Size == firstSize ? "selected" : "")" data-size="@size.Size"
+                                  style="border:1px solid #e8d8cc; border-radius:2px; padding:6px 16px; font-size:13px; font-weight:600; color:#2c1a0e; cursor:pointer;">
                                 @size.Size
                             </span>
                         }
@@ -147,13 +151,20 @@
 
             <!-- ACTION BUTTONS -->
             <div class="details-actions">
-                <a href="/Order/Checkout?productId=@Model?.Id&size=@(Model?.Sizes.FirstOrDefault()?.Size ?? "Free Size")"
-                   class="btn-terra" style="justify-content:center; padding:14px 24px; font-size:14px; border-radius:2px; width:100%;">
+                @if (Model?.StockQuantity > 0 && Model.IsAvailable)
+                {
+                    <form asp-action="Add" asp-controller="Cart" method="post" id="addToCartForm">
+                        <input type="hidden" name="productId" value="@Model?.Id" />
+                        <input type="hidden" name="size" id="selectedSizeInput" value="@firstSize" />
+                        <input type="hidden" name="quantity" value="1" />
+                        <button type="submit" class="btn-terra" style="justify-content:center; padding:14px 24px; font-size:14px; border-radius:2px; width:100%;">
+                            <i class="bi bi-bag-plus-fill"></i> Add to Cart
+                        </button>
+                    </form>
+                }
+                <a href="/Order/Checkout?productId=@Model?.Id&size=@firstSize"
+                   class="btn-outline-terra" style="justify-content:center; padding:14px 24px; font-size:14px; border-radius:2px; width:100%;">
                     <i class="bi bi-credit-card-fill"></i> Buy Now — Pay Online
-                </a>
-                <a href="https://wa.me/2347036832309?text=Hi%20Yasmah%2C%20I%20want%20to%20order%20@Uri.EscapeDataString(Model?.Name ?? " ")"
-                   class="whatsapp-btn" style="justify-content:center; padding:14px 24px; width:100%;">
-                    <i class="bi bi-whatsapp"></i> Order via WhatsApp
                 </a>
                 <a href="/Shop" class="btn-outline-terra" style="justify-content:center; padding:14px 24px; width:100%;">
                     <i class="bi bi-arrow-left"></i> Continue Shopping
@@ -172,8 +183,8 @@
                         <span style="font-size:12px; color:#9c7b6a;">Nationwide Delivery</span>
                     </div>
                     <div style="display:flex; align-items:center; gap:8px;">
-                        <i class="bi bi-whatsapp" style="color:#c4714a; font-size:18px;"></i>
-                        <span style="font-size:12px; color:#9c7b6a;">WhatsApp Support</span>
+                        <i class="bi bi-chat-heart" style="color:#c4714a; font-size:18px;"></i>
+                        <span style="font-size:12px; color:#9c7b6a;">Custom Orders Welcome</span>
                     </div>
                     <div style="display:flex; align-items:center; gap:8px;">
                         <i class="bi bi-heart" style="color:#c4714a; font-size:18px;"></i>
@@ -184,3 +195,27 @@
         </div>
     </div>
 </div>
+
+<script>
+    const sizeChips = document.querySelectorAll('.size-chip-select');
+    const sizeInput = document.getElementById('selectedSizeInput');
+
+    sizeChips.forEach(chip => {
+        chip.addEventListener('click', () => {
+            sizeChips.forEach(c => {
+                c.style.borderColor = '#e8d8cc';
+                c.style.background = 'transparent';
+                c.classList.remove('selected');
+            });
+            chip.style.borderColor = '#c4714a';
+            chip.style.background = '#f5ede6';
+            chip.classList.add('selected');
+            if (sizeInput) sizeInput.value = chip.getAttribute('data-size');
+        });
+
+        if (chip.classList.contains('selected')) {
+            chip.style.borderColor = '#c4714a';
+            chip.style.background = '#f5ede6';
+        }
+    });
+</script>
