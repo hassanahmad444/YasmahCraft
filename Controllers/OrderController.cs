@@ -8,12 +8,14 @@ namespace YasmahCraft.Controllers
     {
         private readonly IOrderService _orderService;
         private readonly IProductService _productService;
+        private readonly ICartService _cartService;
         private readonly IConfiguration _configuration;
 
-        public OrderController(IOrderService orderService, IProductService productService, IConfiguration configuration)
+        public OrderController(IOrderService orderService, IProductService productService, ICartService cartService, IConfiguration configuration)
         {
             _orderService = orderService;
             _productService = productService;
+            _cartService = cartService;
             _configuration = configuration;
         }
 
@@ -40,7 +42,35 @@ namespace YasmahCraft.Controllers
 
             ViewBag.PublicKey = _configuration["Paystack:PublicKey"];
             ViewBag.Product = product;
-            return View(model);
+            return View("Checkout", model);
+        }
+
+        [HttpGet]
+        public IActionResult CheckoutCart()
+        {
+            var cart = _cartService.GetCart(HttpContext.Session);
+
+            if (!cart.Any())
+            {
+                TempData["Error"] = "Your cart is empty.";
+                return RedirectToAction("Index", "Cart");
+            }
+
+            var model = new PlaceOrderViewModel
+            {
+                CartItems = cart.Select(c => new CartItemViewModel
+                {
+                    ProductId = c.ProductId,
+                    ProductName = c.ProductName,
+                    Size = c.Size,
+                    Quantity = c.Quantity,
+                    UnitPrice = c.UnitPrice
+                }).ToList()
+            };
+
+            ViewBag.PublicKey = _configuration["Paystack:PublicKey"];
+            ViewBag.CartItemsDisplay = cart;
+            return View("Checkout", model);
         }
 
         [HttpPost]
@@ -50,7 +80,7 @@ namespace YasmahCraft.Controllers
             if (!ModelState.IsValid)
             {
                 ViewBag.PublicKey = _configuration["Paystack:PublicKey"];
-                return View(model);
+                return View("Checkout", model);
             }
 
             var order = await _orderService.CreateOrderAsync(model);
@@ -62,6 +92,9 @@ namespace YasmahCraft.Controllers
             var reference = $"YC-{order.OrderNumber}-{DateTime.UtcNow.Ticks}";
             order.PaystackReference = reference;
             await _orderService.UpdateOrderStatusAsync(reference, Models.Entities.OrderStatus.Pending);
+
+            // Clear the cart now that order is placed
+            _cartService.ClearCart(HttpContext.Session);
 
             ViewBag.PublicKey = _configuration["Paystack:PublicKey"];
             ViewBag.Reference = reference;

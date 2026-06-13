@@ -3,6 +3,7 @@
     ViewData["Title"] = "Checkout";
     Layout = "~/Views/Shared/_Layout.cshtml";
     var product = ViewBag.Product as YasmahCraft.Models.Entities.Product;
+    var cartItemsDisplay = ViewBag.CartItemsDisplay as List<YasmahCraft.Models.CartItem>;
 }
 
 <style>
@@ -18,6 +19,16 @@
         gap: 40px;
         align-items: start;
     }
+
+    .checkout-line-item {
+        display: flex;
+        gap: 12px;
+        align-items: center;
+        padding: 10px 0;
+        border-bottom: 1px solid #f5ede6;
+    }
+
+    .checkout-line-item:last-child { border-bottom: none; }
 
     @@media(max-width: 768px) {
         .checkout-container {
@@ -62,8 +73,10 @@
                 Order Summary
             </div>
             <div style="background:white; border:1px solid #e8d8cc; border-radius:4px; padding:20px;">
+
                 @if (product != null)
                 {
+                    <!-- Single product checkout -->
                     <div style="display:flex; gap:16px; align-items:center;">
                         <div style="width:80px; height:80px; background:#f5ede6; border-radius:4px; overflow:hidden; flex-shrink:0;">
                             @if (!string.IsNullOrEmpty(product.ImageUrl))
@@ -82,6 +95,27 @@
                         </div>
                     </div>
                 }
+                else if (cartItemsDisplay != null && cartItemsDisplay.Any())
+                {
+                    <!-- Multi-item cart checkout -->
+                    @foreach (var item in cartItemsDisplay)
+                    {
+                        <div class="checkout-line-item">
+                            <div style="width:56px; height:56px; background:#f5ede6; border-radius:4px; overflow:hidden; flex-shrink:0;">
+                                @if (!string.IsNullOrEmpty(item.ImageUrl))
+                                {
+                                    <img src="@item.ImageUrl" alt="@item.ProductName" style="width:100%; height:100%; object-fit:cover;" />
+                                }
+                            </div>
+                            <div style="flex:1; min-width:0;">
+                                <div style="font-family:'Cormorant Garamond',serif; font-size:15px; font-weight:600; color:#2c1a0e;">@item.ProductName</div>
+                                <div style="font-size:11px; color:#9c7b6a;">Size: @item.Size · Qty: @item.Quantity</div>
+                            </div>
+                            <div style="font-size:14px; font-weight:700; color:#c4714a;">₦@item.TotalPrice.ToString("N0")</div>
+                        </div>
+                    }
+                }
+
                 <div style="border-top:1px solid #e8d8cc; margin-top:20px; padding-top:16px;">
                     <div style="display:flex; justify-content:space-between; font-size:16px; font-weight:700; color:#2c1a0e; padding-top:12px;">
                         <span>Total</span>
@@ -105,13 +139,13 @@
             <div style="background:white; border:1px solid #e8d8cc; border-radius:4px; padding:24px;">
                 <form asp-action="Checkout" asp-controller="Order" method="post">
                     @Html.AntiForgeryToken()
-                    @foreach (var item in Model.CartItems)
+                    @for (int i = 0; i < Model.CartItems.Count; i++)
                     {
-                        <input type="hidden" name="CartItems[@Model.CartItems.IndexOf(item)].ProductId" value="@item.ProductId" />
-                        <input type="hidden" name="CartItems[@Model.CartItems.IndexOf(item)].ProductName" value="@item.ProductName" />
-                        <input type="hidden" name="CartItems[@Model.CartItems.IndexOf(item)].Size" value="@item.Size" />
-                        <input type="hidden" name="CartItems[@Model.CartItems.IndexOf(item)].Quantity" value="@item.Quantity" />
-                        <input type="hidden" name="CartItems[@Model.CartItems.IndexOf(item)].UnitPrice" value="@item.UnitPrice" />
+                        <input type="hidden" name="CartItems[@i].ProductId" value="@Model.CartItems[i].ProductId" />
+                        <input type="hidden" name="CartItems[@i].ProductName" value="@Model.CartItems[i].ProductName" />
+                        <input type="hidden" name="CartItems[@i].Size" value="@Model.CartItems[i].Size" />
+                        <input type="hidden" name="CartItems[@i].Quantity" value="@Model.CartItems[i].Quantity" />
+                        <input type="hidden" name="CartItems[@i].UnitPrice" value="@Model.CartItems[i].UnitPrice" />
                     }
                     <div asp-validation-summary="ModelOnly" style="color:#dc2626; font-size:13px; margin-bottom:16px;"></div>
                     <div style="margin-bottom:16px;">
