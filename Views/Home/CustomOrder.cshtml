@@ -1,0 +1,108 @@
+@{
+    ViewData["Title"] = "Custom Order";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    .custom-hero {
+        background: linear-gradient(135deg, #f5ede6, #f7eeec);
+        padding: 80px 40px;
+        text-align: center;
+    }
+
+    .custom-body {
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 64px 40px;
+    }
+
+    @@media(max-width: 768px) {
+        .custom-hero {
+            padding: 56px 24px;
+        }
+
+        .custom-hero h1 {
+            font-size: 36px !important;
+        }
+
+        .custom-body {
+            padding: 40px 20px;
+        }
+
+        .custom-submit {
+            width: 100% !important;
+            justify-content: center !important;
+        }
+    }
+</style>
+
+<!-- HERO -->
+<section class="custom-hero">
+    <div style="font-size:10px; font-weight:600; letter-spacing:4px; text-transform:uppercase; color:#c4714a; margin-bottom:8px;">
+        Made Just For You
+    </div>
+    <h1 style="font-family:'Cormorant Garamond',serif; font-size:48px; font-weight:600; color:#2c1a0e; line-height:1.2;">
+        Custom Order
+    </h1>
+    <p style="font-size:15px; color:#9c7b6a; max-width:480px; margin:16px auto 0; line-height:1.8; font-weight:300;">
+        Tell us what you have in mind — colour, size, design — and we'll bring it to life by hand.
+    </p>
+</section>
+
+<!-- FORM -->
+<section class="custom-body">
+    <div style="background:white; border:1px solid #e8d8cc; border-radius:4px; padding:32px;">
+        <div style="margin-bottom:16px;">
+            <label class="form-label-craft">Full Name</label>
+            <input type="text" id="customName" class="form-control-craft" placeholder="e.g. Fatima Adebayo" />
+        </div>
+        <div style="margin-bottom:16px;">
+            <label class="form-label-craft">Phone Number</label>
+            <input type="text" id="customPhone" class="form-control-craft" placeholder="e.g. 08012345678" />
+        </div>
+        <div style="margin-bottom:16px;">
+            <label class="form-label-craft">What category?</label>
+            <select id="customCategory" class="form-control-craft">
+                <option value="Bags">Bags</option>
+                <option value="Clothing">Clothing</option>
+                <option value="Other">Other</option>
+            </select>
+        </div>
+        <div style="margin-bottom:24px;">
+            <label class="form-label-craft">Describe your dream piece</label>
+            <textarea id="customDescription" class="form-control-craft" rows="5" placeholder="Colour, size, style, occasion — the more detail, the better!"></textarea>
+        </div>
+        <button onclick="sendCustomOrder()" class="whatsapp-btn custom-submit" style="width:100%; justify-content:center; padding:14px; font-size:14px;">
+            <i class="bi bi-whatsapp"></i> Send to Yasmah on WhatsApp
+        </button>
+    </div>
+
+    <div style="margin-top:24px; text-align:center;">
+        <a href="/Shop" class="btn-outline-terra" style="width:auto;">
+            <i class="bi bi-arrow-left"></i> Back to Shop
+        </a>
+    </div>
+</section>
+
+<script>
+    function sendCustomOrder() {
+        const name = document.getElementById('customName').value.trim();
+        const phone = document.getElementById('customPhone').value.trim();
+        const category = document.getElementById('customCategory').value;
+        const description = document.getElementById('customDescription').value.trim();
+
+        if (!name || !description) {
+            alert('Please fill in your name and describe what you want.');
+            return;
+        }
+
+        let message = `Hi Yasmah, I would like to place a custom order.\n\n`;
+        message += `Name: ${name}\n`;
+        if (phone) message += `Phone: ${phone}\n`;
+        message += `Category: ${category}\n`;
+        message += `Details: ${description}`;
+
+        const encoded = encodeURIComponent(message);
+        window.open(`https://wa.me/2347036832309?text=${encoded}`, '_blank');
+    }
+</script>
